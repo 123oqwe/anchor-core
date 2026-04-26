@@ -14,6 +14,7 @@ import { db, DEFAULT_USER_ID, logExecution } from "../L0_runtime/db.js";
 import { writeMemory } from "../L2_memory/memory.js";
 import { text } from "../L0_runtime/llm-gateway.js";
 import { runDream } from "./system_agents/dream.js";
+import { runDiagnostic } from "./system_agents/diagnostic.js";
 
 interface SchedEntry {
   id: string;
@@ -89,6 +90,16 @@ export function registerSystemSchedules(): void {
     pattern: "0 3 * * *",
     enabled: true,
     fn: async () => { await runDream(); },
+  });
+
+  // Self-Diagnostic — weekly Sunday 9am
+  registerSchedule({
+    id: "diagnostic",
+    name: "Diagnostic",
+    grain: "cron",
+    pattern: "0 9 * * 0",
+    enabled: true,
+    fn: () => { runDiagnostic(); },
   });
 
   // User crons (loaded from db)

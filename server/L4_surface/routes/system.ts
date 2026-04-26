@@ -6,11 +6,17 @@
  */
 import { Router } from "express";
 import { runDream } from "../../L3_cognition/system_agents/dream.js";
+import { runDiagnostic } from "../../L3_cognition/system_agents/diagnostic.js";
 
 const router = Router();
 
 router.post("/dream/run", async (_req, res) => {
   try { res.json(await runDream()); }
+  catch (err: any) { res.status(500).json({ error: err.message }); }
+});
+
+router.get("/diagnostic", (_req, res) => {
+  try { res.json(runDiagnostic()); }
   catch (err: any) { res.status(500).json({ error: err.message }); }
 });
 

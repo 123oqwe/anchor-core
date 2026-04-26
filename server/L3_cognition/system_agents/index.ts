@@ -52,16 +52,8 @@ export async function runSkillsCrystallize(): Promise<{ created: number }> {
   return { created: 0 };
 }
 
-export async function runDiagnostic(): Promise<{ healthy: boolean; alerts: string[] }> {
-  const alerts: string[] = [];
-  const failureRate = (db.prepare(
-    "SELECT (CAST(SUM(CASE WHEN status='failed' THEN 1 ELSE 0 END) AS REAL) / NULLIF(COUNT(*), 0)) as r FROM agent_executions WHERE user_id=? AND datetime(created_at) > datetime('now','-1 day')"
-  ).get(DEFAULT_USER_ID) as any)?.r ?? 0;
-  if (failureRate > 0.3) alerts.push(`agent failure rate ${(failureRate * 100).toFixed(0)}% in last 24h`);
-  const mcpErrors = (db.prepare("SELECT COUNT(*) as c FROM mcp_servers WHERE user_id=? AND status='error'").get(DEFAULT_USER_ID) as any)?.c ?? 0;
-  if (mcpErrors > 0) alerts.push(`${mcpErrors} MCP servers in error state`);
-  return { healthy: alerts.length === 0, alerts };
-}
+// Diagnostic ported — see ./diagnostic.ts.
+export { runDiagnostic, type DiagnosticReport } from "./diagnostic.js";
 
 // Oracle Council ported — see ./oracle-council.ts. Re-exported for callers.
 export { runOracleCouncil, getLatestPortrait, type PortraitV1, type OracleNarrative, type Compass } from "./oracle-council.js";
