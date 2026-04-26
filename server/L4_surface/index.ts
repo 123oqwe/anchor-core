@@ -25,6 +25,7 @@ import onboardingRoutes from "./routes/onboarding.js";
 import chatRoutes from "./routes/chat.js";
 import approvalRoutes from "./routes/approvals.js";
 import toolRoutes from "./routes/tools.js";
+import systemRoutes from "./routes/system.js";
 
 async function boot(): Promise<void> {
   console.log("⚓ Anchor Core booting...");
@@ -55,6 +56,7 @@ async function boot(): Promise<void> {
   app.use("/api/chat", chatRoutes);
   app.use("/api/approvals", approvalRoutes);
   app.use("/api/tools", toolRoutes);
+  app.use("/api/system", systemRoutes);
 
   app.use((err: any, _req: Request, res: Response, _next: any) => {
     console.error("[Express] error:", err);

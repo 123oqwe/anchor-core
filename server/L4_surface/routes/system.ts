@@ -1,0 +1,17 @@
+/**
+ * /api/system — manual triggers + introspection for evolution subsystems.
+ *
+ * In production these run on cron. Endpoints exist so user (or tests) can
+ * fire them on-demand.
+ */
+import { Router } from "express";
+import { runDream } from "../../L3_cognition/system_agents/dream.js";
+
+const router = Router();
+
+router.post("/dream/run", async (_req, res) => {
+  try { res.json(await runDream()); }
+  catch (err: any) { res.status(500).json({ error: err.message }); }
+});
+
+export default router;

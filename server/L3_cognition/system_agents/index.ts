@@ -22,12 +22,8 @@
 import { db, DEFAULT_USER_ID, logExecution } from "../../L0_runtime/db.js";
 import { writeMemory } from "../../L2_memory/memory.js";
 
-export async function runDream(): Promise<{ pruned: number; merged: number }> {
-  // MVP: prune working memories older than 7 days.
-  const r = db.prepare("DELETE FROM memories WHERE user_id=? AND type='working' AND datetime(created_at) < datetime('now', '-7 days')").run(DEFAULT_USER_ID);
-  logExecution("Dream", `pruned ${r.changes} working memories`);
-  return { pruned: r.changes, merged: 0 };
-}
+// Dream Engine ported — see ./dream.ts.
+export { runDream, type DreamStats } from "./dream.js";
 
 export async function runGEPA(): Promise<{ proposals: number }> {
   // MVP: count failed agent_executions in last 7 days as a placeholder for trace-mining.
