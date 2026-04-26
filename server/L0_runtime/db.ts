@@ -267,6 +267,16 @@ db.exec(`
     state_json TEXT NOT NULL DEFAULT '{}',
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
+
+  -- ── Portraits (Oracle Council output, versioned) ─────────────────
+  CREATE TABLE IF NOT EXISTS portraits (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    version INTEGER NOT NULL DEFAULT 1,
+    data_json TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_portraits_user ON portraits(user_id, version DESC);
 `);
 
 // Seed default user

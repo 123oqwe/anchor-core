@@ -67,9 +67,5 @@ export async function runDiagnostic(): Promise<{ healthy: boolean; alerts: strin
   return { healthy: alerts.length === 0, alerts };
 }
 
-export async function runOraclePortraitStub(): Promise<{ narratives: { oracle: string; text: string }[] }> {
-  // MVP: writes a single placeholder. Full 5-oracle synthesis in Phase 2 (port from anchor-backend).
-  const summary = `Anchor has begun building your Personal Knowledge Graph. As more data flows in, your portrait will deepen.`;
-  writeMemory({ type: "semantic", title: "Initial portrait", content: summary, source: "oracle_stub" });
-  return { narratives: [{ oracle: "compass", text: summary }] };
-}
+// Oracle Council ported — see ./oracle-council.ts. Re-exported for callers.
+export { runOracleCouncil, getLatestPortrait, type PortraitV1, type OracleNarrative, type Compass } from "./oracle-council.js";
