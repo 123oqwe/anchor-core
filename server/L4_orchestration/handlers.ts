@@ -1,5 +1,5 @@
 /**
- * L3 — Event handlers wire bus events to cognition reactions.
+ * L4 — Event handlers wire bus events to cognition reactions.
  *
  * USER_CONFIRMED → SessionRunner kicks off + Twin learns from edits
  * EXECUTION_DONE → Twin learns from results
@@ -10,7 +10,7 @@
  */
 import { bus } from "./bus.js";
 import { startSession } from "./session-runner.js";
-import { twinLearnFromEdits, twinLearnFromResults } from "./twin.js";
+import { twinLearnFromEdits, twinLearnFromResults } from "../L3_cognition/twin.js";
 import { logExecution } from "../L0_runtime/db.js";
 
 export function wireHandlers(): void {

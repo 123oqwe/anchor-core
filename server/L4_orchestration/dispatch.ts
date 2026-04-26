@@ -13,11 +13,11 @@ import { schedule as cronSchedule } from "node-cron";
 import { db, DEFAULT_USER_ID, logExecution } from "../L0_runtime/db.js";
 import { writeMemory } from "../L2_memory/memory.js";
 import { text } from "../L0_runtime/llm-gateway.js";
-import { runDream } from "./system_agents/dream.js";
-import { runDiagnostic } from "./system_agents/diagnostic.js";
-import { runSkillsCrystallize } from "./system_agents/skills.js";
-import { runEvolution } from "./system_agents/evolution.js";
-import { runGEPA } from "./system_agents/gepa.js";
+import { runDream } from "../L3_cognition/system_agents/dream.js";
+import { runDiagnostic } from "../L3_cognition/system_agents/diagnostic.js";
+import { runSkillsCrystallize } from "../L3_cognition/system_agents/skills.js";
+import { runEvolution } from "../L3_cognition/system_agents/evolution.js";
+import { runGEPA } from "../L3_cognition/system_agents/gepa.js";
 
 interface SchedEntry {
   id: string;

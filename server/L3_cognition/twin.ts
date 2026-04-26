@@ -12,7 +12,7 @@
 import { text } from "../L0_runtime/llm-gateway.js";
 import { writeTwinInsight } from "../L2_memory/memory.js";
 import { createNode } from "../L2_memory/graph.js";
-import type { StepChange } from "./bus.js";
+import type { StepChange } from "../L4_orchestration/bus.js";
 
 const SYS_EDITS = `You are Anchor's Twin Agent. The user just edited an advisor plan. From the diff, infer ONE thing about the user's preferences, working style, or constraints.
 Output JSON only:

@@ -4,7 +4,7 @@
 import { Router } from "express";
 import { nanoid } from "nanoid";
 import { db, DEFAULT_USER_ID } from "../../L0_runtime/db.js";
-import { listSchedules } from "../../L3_cognition/dispatch.js";
+import { listSchedules } from "../../L4_orchestration/dispatch.js";
 
 const router = Router();
 

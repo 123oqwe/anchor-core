@@ -6,7 +6,7 @@
  */
 import { Router } from "express";
 import { decide, persistPlanAsSession } from "../../L3_cognition/decision.js";
-import { bus, type StepChange, type PlanStep } from "../../L3_cognition/bus.js";
+import { bus, type StepChange, type PlanStep } from "../../L4_orchestration/bus.js";
 
 const router = Router();
 

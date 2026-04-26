@@ -2,7 +2,7 @@
  * /api/approvals — Approval queue.
  */
 import { Router } from "express";
-import { listPending, decide } from "../../L3_cognition/approval.js";
+import { listPending, decide } from "../../L4_orchestration/approval.js";
 
 const router = Router();
 

@@ -16,11 +16,13 @@ The product capability is unchanged from anchor-backend. What changes is **how**
 ## 5-layer architecture
 
 ```
-L4 Surface           HTTP routes + SSE
-L3 Cognition + Orch  Decision / Twin / Custom Agent / Plan FSM / scheduler / bus / approval
-L2 Memory + Graph    episodic / semantic / working memories + bi-temporal Personal Knowledge Graph
-L1 Tools             registry + permission gate + ~10 cross-platform builtins + MCP-discovered tools
-L0 Runtime           SQLite WAL + LLM Gateway + MCP Host (subprocess manager)
+L5 Surface         HTTP routes + SSE
+L4 Orchestration   Bus + handlers + dispatch hub + SessionRunner + approval queue
+L3 Cognition       Decision / Twin / Custom Agent / Chat / Onboarding /
+                   system_agents (Dream / GEPA / Evolution / Skills / Diagnostic / Oracle Council)
+L2 Memory + Graph  episodic / semantic / working memories + bi-temporal Personal Knowledge Graph
+L1 Tools           registry + permission gate + ~10 cross-platform builtins + MCP-discovered tools
+L0 Runtime         SQLite WAL + LLM Gateway + MCP Host (subprocess manager)
 ```
 
 See `docs/ARCHITECTURE.md` for the full picture.

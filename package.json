@@ -5,8 +5,8 @@
   "license": "MIT",
   "description": "Anchor Core — cross-platform MCP-first personal AI agent runtime. 5 layers: Runtime / Tools / Memory / Cognition+Orchestration / Surface.",
   "scripts": {
-    "dev": "tsx --env-file=.env --watch server/L4_surface/index.ts",
-    "start": "tsx --env-file=.env server/L4_surface/index.ts",
+    "dev": "tsx --env-file=.env --watch server/L5_surface/index.ts",
+    "start": "tsx --env-file=.env server/L5_surface/index.ts",
     "check": "tsc --noEmit",
     "test": "pnpm run check && tsx server/eval/invariants.ts",
     "smoke": "tsx server/eval/smoke.ts"

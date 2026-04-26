@@ -1,18 +1,18 @@
 /**
- * L4 Surface — HTTP entry point.
+ * L5 Surface — HTTP entry point.
  *
  * Boot order:
  *   1. L0: db schema runs on import
  *   2. L1: register builtin tools
  *   3. L0: connect MCP servers (registers their tools into L1)
- *   4. L3: wire bus handlers, register system schedules
- *   5. L4: mount routes, listen
+ *   4. L4: wire bus handlers, register system schedules
+ *   5. L5: mount routes, listen
  */
 import express, { type Request, type Response } from "express";
 import { registerBuiltinTools } from "../L1_tools/builtin/index.js";
 import { initMCPHost } from "../L0_runtime/mcp-host.js";
-import { wireHandlers } from "../L3_cognition/handlers.js";
-import { registerSystemSchedules } from "../L3_cognition/dispatch.js";
+import { wireHandlers } from "../L4_orchestration/handlers.js";
+import { registerSystemSchedules } from "../L4_orchestration/dispatch.js";
 import healthRoutes from "./routes/health.js";
 import advisorRoutes from "./routes/advisor.js";
 import agentRoutes from "./routes/agents.js";
