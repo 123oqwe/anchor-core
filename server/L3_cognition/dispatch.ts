@@ -17,6 +17,7 @@ import { runDream } from "./system_agents/dream.js";
 import { runDiagnostic } from "./system_agents/diagnostic.js";
 import { runSkillsCrystallize } from "./system_agents/skills.js";
 import { runEvolution } from "./system_agents/evolution.js";
+import { runGEPA } from "./system_agents/gepa.js";
 
 interface SchedEntry {
   id: string;
@@ -122,6 +123,16 @@ export function registerSystemSchedules(): void {
     pattern: "0 4 * * *",
     enabled: true,
     fn: async () => { await runEvolution(); },
+  });
+
+  // GEPA — weekly Sunday 5am (post-Dream/Evolution, mines llm_calls last 7d)
+  registerSchedule({
+    id: "gepa",
+    name: "GEPA Trace Optimizer",
+    grain: "cron",
+    pattern: "0 5 * * 0",
+    enabled: true,
+    fn: async () => { await runGEPA(); },
   });
 
   // User crons (loaded from db)

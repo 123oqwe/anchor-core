@@ -9,6 +9,7 @@ import { runDream } from "../../L3_cognition/system_agents/dream.js";
 import { runDiagnostic } from "../../L3_cognition/system_agents/diagnostic.js";
 import { runSkillsCrystallize } from "../../L3_cognition/system_agents/skills.js";
 import { runEvolution, getPromptAdaptations } from "../../L3_cognition/system_agents/evolution.js";
+import { runGEPA } from "../../L3_cognition/system_agents/gepa.js";
 
 const router = Router();
 
@@ -34,6 +35,11 @@ router.post("/evolution/run", async (_req, res) => {
 
 router.get("/evolution/adaptations", (_req, res) => {
   res.json({ adaptations: getPromptAdaptations() });
+});
+
+router.post("/gepa/run", async (req, res) => {
+  try { res.json(await runGEPA({ daysBack: req.body?.daysBack ?? 7 })); }
+  catch (err: any) { res.status(500).json({ error: err.message }); }
 });
 
 export default router;

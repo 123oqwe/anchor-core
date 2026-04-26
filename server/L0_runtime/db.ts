@@ -277,7 +277,35 @@ db.exec(`
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
   CREATE INDEX IF NOT EXISTS idx_portraits_user ON portraits(user_id, version DESC);
+
+  -- ── LLM call traces (GEPA fuel) ──────────────────────────────────
+  CREATE TABLE IF NOT EXISTS llm_calls (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    task TEXT NOT NULL,
+    model_id TEXT NOT NULL,
+    input_tokens INTEGER NOT NULL DEFAULT 0,
+    output_tokens INTEGER NOT NULL DEFAULT 0,
+    latency_ms INTEGER NOT NULL DEFAULT 0,
+    status TEXT NOT NULL DEFAULT 'success',
+    error TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_llm_calls_task ON llm_calls(task, created_at DESC);
 `);
+
+export function logLLMCall(input: {
+  task: string; modelId: string; inputTokens: number; outputTokens: number; latencyMs: number; status?: "success" | "failed"; error?: string;
+}): void {
+  db.prepare(
+    "INSERT INTO llm_calls (id, user_id, task, model_id, input_tokens, output_tokens, latency_ms, status, error) VALUES (?,?,?,?,?,?,?,?,?)"
+  ).run(
+    Math.random().toString(36).slice(2, 14),
+    DEFAULT_USER_ID,
+    input.task, input.modelId, input.inputTokens, input.outputTokens, input.latencyMs,
+    input.status ?? "success", input.error ?? null,
+  );
+}
 
 // Seed default user
 db.prepare("INSERT OR IGNORE INTO users (id, name) VALUES (?, ?)").run(DEFAULT_USER_ID, "User");

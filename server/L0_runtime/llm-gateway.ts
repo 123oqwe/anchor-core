@@ -7,7 +7,7 @@
  * Cross-platform: pure HTTP / official SDK, no OS specifics.
  */
 import Anthropic from "@anthropic-ai/sdk";
-import { db, DEFAULT_USER_ID } from "./db.js";
+import { db, DEFAULT_USER_ID, logLLMCall } from "./db.js";
 
 export interface LLMMessage {
   role: "user" | "assistant" | "system";
@@ -53,27 +53,38 @@ export async function text(opts: TextOpts): Promise<TextResult> {
     .map(m => ({ role: m.role as "user" | "assistant", content: m.content }));
 
   const systemPrompt = [opts.system, ...systemMsgs].filter(Boolean).join("\n\n");
+  const start = Date.now();
 
-  const response = await anthropic.messages.create({
-    model: modelId,
-    max_tokens: opts.maxTokens ?? 1024,
-    system: systemPrompt || undefined,
-    messages: turnMsgs.length ? turnMsgs : [{ role: "user", content: " " }],
-    tools: opts.tools as any,
-  });
+  try {
+    const response = await anthropic.messages.create({
+      model: modelId,
+      max_tokens: opts.maxTokens ?? 1024,
+      system: systemPrompt || undefined,
+      messages: turnMsgs.length ? turnMsgs : [{ role: "user", content: " " }],
+      tools: opts.tools as any,
+    });
 
-  let outText = "";
-  const toolCalls: { name: string; input: any }[] = [];
-  for (const block of response.content) {
-    if (block.type === "text") outText += block.text;
-    else if (block.type === "tool_use") toolCalls.push({ name: block.name, input: block.input });
+    let outText = "";
+    const toolCalls: { name: string; input: any }[] = [];
+    for (const block of response.content) {
+      if (block.type === "text") outText += block.text;
+      else if (block.type === "tool_use") toolCalls.push({ name: block.name, input: block.input });
+    }
+
+    logLLMCall({
+      task: opts.task, modelId,
+      inputTokens: response.usage.input_tokens, outputTokens: response.usage.output_tokens,
+      latencyMs: Date.now() - start, status: "success",
+    });
+
+    return {
+      text: outText, toolCalls,
+      stopReason: response.stop_reason as any ?? "end_turn",
+      modelId,
+      tokensUsed: { input: response.usage.input_tokens, output: response.usage.output_tokens },
+    };
+  } catch (err: any) {
+    logLLMCall({ task: opts.task, modelId, inputTokens: 0, outputTokens: 0, latencyMs: Date.now() - start, status: "failed", error: err?.message?.slice(0, 300) });
+    throw err;
   }
-
-  return {
-    text: outText,
-    toolCalls,
-    stopReason: response.stop_reason as any ?? "end_turn",
-    modelId,
-    tokensUsed: { input: response.usage.input_tokens, output: response.usage.output_tokens },
-  };
 }
