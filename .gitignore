@@ -1,0 +1,7 @@
+node_modules/
+*.log
+.env
+.env.local
+server/L0_runtime/anchor.db
+server/L0_runtime/anchor.db-*
+.DS_Store

@@ -1,0 +1,34 @@
+{
+  "name": "anchor-core",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "description": "Anchor Core — cross-platform MCP-first personal AI agent runtime. 5 layers: Runtime / Tools / Memory / Cognition+Orchestration / Surface.",
+  "scripts": {
+    "dev": "tsx --env-file=.env --watch server/L4_surface/index.ts",
+    "start": "tsx --env-file=.env server/L4_surface/index.ts",
+    "check": "tsc --noEmit",
+    "test": "pnpm run check && tsx server/eval/invariants.ts",
+    "smoke": "tsx server/eval/smoke.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.30.0",
+    "better-sqlite3": "^11.5.0",
+    "express": "^4.21.0",
+    "nanoid": "^5.0.7",
+    "node-cron": "^3.0.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.11",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.0.0",
+    "@types/node-cron": "^3.0.11",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.3"
+  },
+  "packageManager": "pnpm@10.4.1",
+  "pnpm": {
+    "onlyBuiltDependencies": ["better-sqlite3"]
+  }
+}
