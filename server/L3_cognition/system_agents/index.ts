@@ -43,14 +43,8 @@ export async function runEvolution(): Promise<{ adaptations: number }> {
   return { adaptations: 0 };
 }
 
-export async function runSkillsCrystallize(): Promise<{ created: number }> {
-  // MVP: counts confirmed plans with similar summaries; doesn't yet auto-create skills.
-  const recent = db.prepare(
-    "SELECT plan_summary, COUNT(*) as n FROM action_sessions WHERE user_id=? AND status='done' AND datetime(started_at) > datetime('now','-30 days') GROUP BY plan_summary HAVING n >= 3"
-  ).all(DEFAULT_USER_ID) as any[];
-  logExecution("Skills", `${recent.length} crystallization candidates (auto-create: Phase 2)`);
-  return { created: 0 };
-}
+// Skills Crystallization ported — see ./skills.ts.
+export { runSkillsCrystallize, type CrystallizeResult } from "./skills.js";
 
 // Diagnostic ported — see ./diagnostic.ts.
 export { runDiagnostic, type DiagnosticReport } from "./diagnostic.js";

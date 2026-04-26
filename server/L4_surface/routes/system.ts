@@ -7,6 +7,7 @@
 import { Router } from "express";
 import { runDream } from "../../L3_cognition/system_agents/dream.js";
 import { runDiagnostic } from "../../L3_cognition/system_agents/diagnostic.js";
+import { runSkillsCrystallize } from "../../L3_cognition/system_agents/skills.js";
 
 const router = Router();
 
@@ -17,6 +18,11 @@ router.post("/dream/run", async (_req, res) => {
 
 router.get("/diagnostic", (_req, res) => {
   try { res.json(runDiagnostic()); }
+  catch (err: any) { res.status(500).json({ error: err.message }); }
+});
+
+router.post("/skills/crystallize", async (_req, res) => {
+  try { res.json(await runSkillsCrystallize()); }
   catch (err: any) { res.status(500).json({ error: err.message }); }
 });
 

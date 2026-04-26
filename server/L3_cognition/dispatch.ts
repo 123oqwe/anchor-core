@@ -15,6 +15,7 @@ import { writeMemory } from "../L2_memory/memory.js";
 import { text } from "../L0_runtime/llm-gateway.js";
 import { runDream } from "./system_agents/dream.js";
 import { runDiagnostic } from "./system_agents/diagnostic.js";
+import { runSkillsCrystallize } from "./system_agents/skills.js";
 
 interface SchedEntry {
   id: string;
@@ -100,6 +101,16 @@ export function registerSystemSchedules(): void {
     pattern: "0 9 * * 0",
     enabled: true,
     fn: () => { runDiagnostic(); },
+  });
+
+  // Skills Crystallization — weekly Sunday 4am (after Dream, before user wakes)
+  registerSchedule({
+    id: "skills_crystallize",
+    name: "Skills Crystallize",
+    grain: "cron",
+    pattern: "0 4 * * 0",
+    enabled: true,
+    fn: async () => { await runSkillsCrystallize(); },
   });
 
   // User crons (loaded from db)
