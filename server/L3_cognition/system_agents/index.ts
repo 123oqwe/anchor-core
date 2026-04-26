@@ -34,14 +34,8 @@ export async function runGEPA(): Promise<{ proposals: number }> {
   return { proposals: 0 };
 }
 
-export async function runEvolution(): Promise<{ adaptations: number }> {
-  // MVP: write a current-state summary to evolution_state; rich adaptive prompts come in Phase 2.
-  const insightCount = (db.prepare("SELECT COUNT(*) as c FROM twin_insights WHERE user_id=?").get(DEFAULT_USER_ID) as any)?.c ?? 0;
-  db.prepare(
-    "INSERT INTO evolution_state (user_id, state_json, updated_at) VALUES (?,?,datetime('now')) ON CONFLICT(user_id) DO UPDATE SET state_json=excluded.state_json, updated_at=datetime('now')"
-  ).run(DEFAULT_USER_ID, JSON.stringify({ twinInsights: insightCount, updatedAt: new Date().toISOString() }));
-  return { adaptations: 0 };
-}
+// Personal Evolution ported — see ./evolution.ts.
+export { runEvolution, getPromptAdaptations, type EvolutionResult } from "./evolution.js";
 
 // Skills Crystallization ported — see ./skills.ts.
 export { runSkillsCrystallize, type CrystallizeResult } from "./skills.js";

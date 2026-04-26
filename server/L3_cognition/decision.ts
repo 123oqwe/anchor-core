@@ -11,6 +11,7 @@ import { text } from "../L0_runtime/llm-gateway.js";
 import { db, DEFAULT_USER_ID } from "../L0_runtime/db.js";
 import { serializeGraphForPrompt, buildValueConstitution } from "../L2_memory/graph.js";
 import { searchMemoryFTS, getTwinInsights, serializeMemoriesForPrompt, serializeTwinForPrompt } from "../L2_memory/memory.js";
+import { getPromptAdaptations } from "./system_agents/evolution.js";
 
 export interface PlanStep { id: number; content: string; tool?: string; time_estimate?: string }
 
@@ -35,6 +36,7 @@ function buildSystemPrompt(message: string): string {
   const memText = serializeMemoriesForPrompt(memorySnippets);
   const twin = getTwinInsights(15);
   const twinText = serializeTwinForPrompt(twin);
+  const evolutionAdapt = getPromptAdaptations();
 
   return [
     `You are Anchor's Decision Agent. The user wants you to recommend a course of action.`,
@@ -46,6 +48,7 @@ function buildSystemPrompt(message: string): string {
     graph,
     memText,
     twinText,
+    evolutionAdapt,
     ``,
     `OUTPUT (when proposing a plan):`,
     `{`,

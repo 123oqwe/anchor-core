@@ -16,6 +16,7 @@ import { text } from "../L0_runtime/llm-gateway.js";
 import { runDream } from "./system_agents/dream.js";
 import { runDiagnostic } from "./system_agents/diagnostic.js";
 import { runSkillsCrystallize } from "./system_agents/skills.js";
+import { runEvolution } from "./system_agents/evolution.js";
 
 interface SchedEntry {
   id: string;
@@ -111,6 +112,16 @@ export function registerSystemSchedules(): void {
     pattern: "0 4 * * 0",
     enabled: true,
     fn: async () => { await runSkillsCrystallize(); },
+  });
+
+  // Personal Evolution — daily 4am (after Dream)
+  registerSchedule({
+    id: "evolution",
+    name: "Personal Evolution",
+    grain: "cron",
+    pattern: "0 4 * * *",
+    enabled: true,
+    fn: async () => { await runEvolution(); },
   });
 
   // User crons (loaded from db)
